@@ -2,133 +2,776 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Google Maps Lead Generation API</title>
-  <meta name="description" content="Generate fresh business leads from Google Maps using keyword & location. Built for agencies, freelancers and SaaS teams.">
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Maps Lead Generation API - Real-Time B2B Data</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Animated Background */
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.15), transparent 50%),
+                  radial-gradient(circle at 50% 20%, rgba(119, 198, 255, 0.1), transparent 50%);
+      z-index: -1;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.1); }
+    }
+
+    /* Navigation */
+    nav {
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 10, 15, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 100;
+      animation: slideDown 0.8s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo::before {
+      content: "📍";
+      -webkit-text-fill-color: initial;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(102, 126, 234, 0.2);
+      border: 1px solid rgba(102, 126, 234, 0.4);
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    h1 {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff 0%, #a8b2ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .subtitle {
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 680px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.8s both;
+    }
+
+    .btn {
+      padding: 16px 40px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 50px rgba(102, 126, 234, 0.6);
+    }
+
+    .secondary-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      backdrop-filter: blur(10px);
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Stats Section */
+    .stats {
+      padding: 60px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 48px;
+      text-align: center;
+    }
+
+    .stat {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+
+    .stat.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 16px;
+    }
+
+    /* Features Section */
+    .section {
+      padding: 100px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-title {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 40px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .feature-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(102, 126, 234, 0.4);
+      box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .feature-desc {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* How It Works */
+    .steps-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 48px;
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.6s ease;
+    }
+
+    .step.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .step-content h3 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .step-content p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    /* Code Example */
+    .code-section {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 24px;
+      padding: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 60px;
+    }
+
+    .code-block {
+      background: #1a1a24;
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #a8b2ff;
+      border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    /* Pricing */
+    .pricing-card {
+      max-width: 500px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .price {
+      font-size: 64px;
+      font-weight: 800;
+      margin: 24px 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .price-features {
+      list-style: none;
+      text-align: left;
+      margin: 32px 0;
+    }
+
+    .price-features li {
+      padding: 12px 0;
+      color: rgba(255, 255, 255, 0.7);
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .price-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: 800;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 0;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cta-section h2 {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 24px;
+    }
+
+    .cta-section p {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 48px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.4);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Floating Animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 40px; }
+      .subtitle { font-size: 18px; }
+      .section-title { font-size: 36px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .step { flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
+  <div class="bg-gradient"></div>
 
-  <!-- HERO -->
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="logo">Maps Lead API</div>
+      <a href="#contact" class="btn secondary-btn"><span>Get Access</span></a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <span class="badge">API · Beta</span>
-      <h1>Google Maps Lead Generation API</h1>
+      <div class="badge">🚀 API · Beta Access</div>
+      <h1 class="float">Google Maps Lead<br>Generation API</h1>
       <p class="subtitle">
-        Generate fresh, real-time business leads from Google Maps using
-        simple keyword and location queries.
+        Extract fresh, verified business leads from Google Maps in real-time.
+        Built for agencies, developers, and growth teams who need quality B2B data.
       </p>
       <div class="cta-group">
-        <a href="mailto:youremail@gmail.com" class="primary-btn">Request API Access</a>
-        <a href="#how" class="secondary-btn">How it works</a>
+        <a href="#contact" class="btn primary-btn"><span>Request API Access</span></a>
+        <a href="#how" class="btn secondary-btn"><span>See How It Works</span></a>
       </div>
     </div>
   </section>
 
-  <!-- TRUST -->
-  <section class="trust">
+  <!-- Stats -->
+  <section class="stats">
     <div class="container">
-      <p>Built for agencies, freelancers, and developers who need <strong>fresh B2B leads</strong>.</p>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number">12K+</div>
+          <div class="stat-label">Leads Generated</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">98%</div>
+          <div class="stat-label">Success Rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">&lt;5s</div>
+          <div class="stat-label">Avg Response Time</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">Beta</div>
+          <div class="stat-label">Early Access</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- PROBLEM -->
+  <!-- Features -->
   <section class="section">
     <div class="container">
-      <h2>The Problem</h2>
-      <ul class="list">
-        <li>Manual Google Maps scraping is slow and unreliable</li>
-        <li>Purchased lead lists are outdated or duplicated</li>
-        <li>Scaling lead generation requires constant maintenance</li>
-      </ul>
+      <div class="section-header">
+        <h2 class="section-title">Why Choose Our API?</h2>
+        <p class="section-subtitle">Built for scale, designed for developers</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <h3 class="feature-title">Real-Time Data</h3>
+          <p class="feature-desc">Extract live business data directly from Google Maps. No outdated databases or stale information.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🎯</span>
+          <h3 class="feature-title">Precise Targeting</h3>
+          <p class="feature-desc">Filter by location, keywords, ratings, and more. Get exactly the leads you need for your campaigns.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <h3 class="feature-title">Clean CSV Export</h3>
+          <p class="feature-desc">Structured CSV format with all essential fields. No parsing needed—download and use immediately in Excel, Google Sheets, or your CRM.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔒</span>
+          <h3 class="feature-title">Secure & Reliable</h3>
+          <p class="feature-desc">API key authentication, rate limiting, and enterprise-grade infrastructure ensure your data is safe.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🚀</span>
+          <h3 class="feature-title">Simple Integration</h3>
+          <p class="feature-desc">Just a GET request with query parameters. No SDKs, no headers, no complexity. Get started in under 2 minutes.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">💎</span>
+          <h3 class="feature-title">Credit Protection</h3>
+          <p class="feature-desc">1 credit per search. If results contain fewer than 3 leads, your credit is automatically refunded. You only pay for quality.</p>
+        </div>
     </div>
   </section>
 
-  <!-- SOLUTION -->
-  <section class="section alt">
+  <!-- How It Works -->
+  <section id="how" class="section" style="background: rgba(0,0,0,0.2);">
     <div class="container">
-      <h2>The Solution</h2>
-      <p>
-        This API extracts business data directly from Google Maps in real-time.
-        You provide the niche and location — the API delivers clean, structured leads.
-      </p>
-    </div>
-  </section>
+      <div class="section-header">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Three simple steps to get your leads</p>
+      </div>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Send Your Query</h3>
+            <p>Make a simple GET request with your API key, search query (e.g., "dentist", "plumber") and location. That's it—no complex setup needed.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Real-Time Extraction</h3>
+            <p>We scan Google Maps in real-time, extracting business names, contact info, ratings, websites, and more—all structured and clean.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Get CSV Data</h3>
+            <p>Receive verified leads instantly as CSV format with name, email, phone, website, and rating. Ready to import anywhere—CRM, spreadsheets, or automation tools.</p>
+          </div>
+        </div>
+      </div>
 
-  <!-- HOW IT WORKS -->
-  <section id="how" class="section">
-    <div class="container">
-      <h2>How It Works</h2>
-      <div class="steps">
-        <div class="step">
-          <span>1</span>
-          <p>Send a keyword and location to the API</p>
-        </div>
-        <div class="step">
-          <span>2</span>
-          <p>We scan Google Maps in real-time</p>
-        </div>
-        <div class="step">
-          <span>3</span>
-          <p>Receive fresh leads as JSON or CSV</p>
+      <div class="code-section">
+        <h3 style="margin-bottom: 24px; font-size: 24px;">Simple API Integration</h3>
+        <div class="code-block">
+# GET Request - Query Parameters<br>
+GET https://api.yourdomain.com/search?api_key=sk_test_omer&query=restaurant&location=Istanbul<br><br>
+# Or using cURL<br>
+curl "https://api.yourdomain.com/search?api_key=sk_test_omer&query=restaurant&location=Istanbul"<br><br>
+# Response - CSV Format<br>
+name,email,phone,website,rating<br>
+"Sunset Restaurant","info@sunset.com","+90 212 555 1234","www.sunset.com","4.5"<br>
+"Cafe Milano","contact@milano.com","+90 212 555 5678","www.cafemilano.com","4.7"<br>
+"Turkish Delight","hello@turkishdelight.com","+90 212 555 9012","www.tdrestaurant.com","4.3"<br><br>
+# Check Your Credits<br>
+GET https://api.yourdomain.com/credits?api_key=sk_test_omer<br><br>
+Response: { "remaining_credits": 47, "used_credits": 3 }
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DATA -->
-  <section class="section alt">
-    <div class="container">
-      <h2>Data Included</h2>
-      <div class="grid">
-        <div>Business name</div>
-        <div>Email (when available)</div>
-        <div>Phone number</div>
-        <div>Website</div>
-        <div>Google rating</div>
-        <div>Location</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
+  <!-- Data Fields -->
   <section class="section">
     <div class="container">
-      <h2>Fair Credit-Based Pricing</h2>
-      <p>
-        Each successful lead generation job consumes <strong>1 credit</strong>.
-        If a request returns fewer than <strong>3 leads</strong>, the credit is automatically refunded.
-      </p>
+      <div class="section-header">
+        <h2 class="section-title">Complete Business Data</h2>
+        <p class="section-subtitle">Everything you need in one response</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🏢</span>
+          <h3 class="feature-title">Business Name</h3>
+          <p class="feature-desc">Official business name as listed on Google Maps</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📧</span>
+          <h3 class="feature-title">Email Address</h3>
+          <p class="feature-desc">Contact email when publicly available</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📞</span>
+          <h3 class="feature-title">Phone Number</h3>
+          <p class="feature-desc">Direct phone contact for outreach</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌐</span>
+          <h3 class="feature-title">Website URL</h3>
+          <p class="feature-desc">Business website for further research</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⭐</span>
+          <h3 class="feature-title">Google Rating</h3>
+          <p class="feature-desc">Average star rating from customer reviews</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <h3 class="feature-title">CSV Format</h3>
+          <p class="feature-desc">Clean, structured CSV ready for Excel or any CRM</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- TECH -->
-  <section class="section alt">
+  <!-- Pricing -->
+  <section class="section" style="background: rgba(0,0,0,0.2);">
     <div class="container">
-      <h2>Built for Production</h2>
-      <ul class="list">
-        <li>API key authentication</li>
-        <li>Rate limiting & proxy rotation</li>
-        <li>PostgreSQL-backed storage</li>
-        <li>Usage logs & monitoring</li>
-      </ul>
+      <div class="section-header">
+        <h2 class="section-title">Fair, Credit-Based Pricing</h2>
+        <p class="section-subtitle">Pay only for quality results</p>
+      </div>
+      <div class="pricing-card">
+        <div class="badge">Beta Pricing</div>
+        <div class="price">1 Credit</div>
+        <p style="color: rgba(255,255,255,0.7); margin-bottom: 32px;">per successful search query</p>
+        <ul class="price-features">
+          <li>Real-time Google Maps data extraction</li>
+          <li>CSV export with 5 essential fields</li>
+          <li>Auto-refund if fewer than 3 leads</li>
+          <li>Simple query parameter authentication</li>
+          <li>No rate limiting during beta</li>
+          <li>Instant credit balance checking</li>
+          <li>Usage dashboard & logs</li>
+          <li>Email support included</li>
+        </ul>
+        <a href="#contact" class="btn primary-btn" style="width: 100%; margin-top: 24px;"><span>Get Started</span></a>
+      </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="cta-section">
+  <section id="contact" class="cta-section">
     <div class="container">
-      <h2>Get Early Access</h2>
-      <p>
-        The API is currently in beta and onboarding a limited number of users.
-      </p>
-      <a href="mailto:youremail@gmail.com" class="primary-btn">Contact for Access</a>
+      <h2>Ready to Scale Your Lead Generation?</h2>
+      <p>Join agencies and developers using our API to automate their B2B prospecting. Beta access is limited.</p>
+      <a href="mailto:youremail@gmail.com" class="btn primary-btn" style="font-size: 18px; padding: 20px 48px;"><span>Request API Access →</span></a>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- Footer -->
   <footer>
-    <p>© 2025 · Independent API · All rights reserved</p>
+    <div class="container">
+      <p>© 2025 Google Maps Lead Generation API · Built for developers, agencies & growth teams</p>
+    </div>
   </footer>
 
+  <script>
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animatable elements
+    document.querySelectorAll('.stat, .feature-card, .step').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  </script>
 </body>
 </html>
