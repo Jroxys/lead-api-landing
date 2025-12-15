@@ -621,19 +621,96 @@
       <div class="code-section">
         <h3 style="margin-bottom: 24px; font-size: 24px;">Simple API Integration</h3>
         <div class="code-block">
-# GET Request - Query Parameters<br>
-GET https://api.yourdomain.com/search?api_key=sk_test_omer&query=restaurant&location=Istanbul<br><br>
-# Or using cURL<br>
-curl "https://api.yourdomain.com/search?api_key=sk_test_omer&query=restaurant&location=Istanbul"<br><br>
-# Response - CSV Format<br>
-name,email,phone,website,rating<br>
-"Sunset Restaurant","info@sunset.com","+90 212 555 1234","www.sunset.com","4.5"<br>
-"Cafe Milano","contact@milano.com","+90 212 555 5678","www.cafemilano.com","4.7"<br>
-"Turkish Delight","hello@turkishdelight.com","+90 212 555 9012","www.tdrestaurant.com","4.3"<br><br>
-# Check Your Credits<br>
-GET https://api.yourdomain.com/credits?api_key=sk_test_omer<br><br>
-Response: { "remaining_credits": 47, "used_credits": 3 }
-        </div>
+
+# Create Lead Generation Job
+POST https://api.yourdomain.com/leads
+Headers:
+X-API-Key: sk_test_omer
+Content-Type: application/json
+
+Body:
+{
+  "keyword": "restaurant",
+  "location": "Istanbul",
+  "limit": 10
+}
+
+---
+
+# Response
+{
+  "job_id": "b7c9e2a1",
+  "status": "processing"
+}
+
+---
+
+# Check Job Status
+GET https://api.yourdomain.com/leads/status/b7c9e2a1
+Headers:
+X-API-Key: sk_test_omer
+
+Response:
+{
+  "status": "completed"
+}
+
+---
+
+# Get Job Results
+GET https://api.yourdomain.com/leads/result/b7c9e2a1
+Headers:
+X-API-Key: sk_test_omer
+
+Response:
+{
+  "total": 3,
+  "leads": [
+    {
+      "name": "Sunset Restaurant",
+      "email": "info@sunset.com",
+      "phone": "+90 212 555 1234",
+      "website": "www.sunset.com",
+      "rating": "4.5"
+    },
+    {
+      "name": "Cafe Milano",
+      "email": "contact@milano.com",
+      "phone": "+90 212 555 5678",
+      "website": "www.cafemilano.com",
+      "rating": "4.7"
+    },
+    {
+      "name": "Turkish Delight",
+      "email": "hello@turkishdelight.com",
+      "phone": "+90 212 555 9012",
+      "website": "www.tdrestaurant.com",
+      "rating": "4.3"
+    }
+  ]
+}
+
+---
+
+# Download CSV
+GET https://api.yourdomain.com/leads/csv/b7c9e2a1
+Headers:
+X-API-Key: sk_test_omer
+
+---
+
+# Check Remaining Credits
+GET https://api.yourdomain.com/credits
+Headers:
+X-API-Key: sk_test_omer
+
+Response:
+{
+  "remaining_credits": 47
+}
+
+</div>
+
       </div>
     </div>
   </section>
