@@ -1,31 +1,135 @@
+:root {
+  --bg: #0b1220;
+  --bg-alt: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #38bdf8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 40px;
-  background: #0f172a;
-  color: #e5e7eb;
+  font-family: Inter, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .hero {
+  padding: 100px 0;
   text-align: center;
-  margin-bottom: 80px;
+}
+
+.badge {
+  display: inline-block;
+  background: #1f2933;
+  color: var(--accent);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 
 h1 {
-  font-size: 42px;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 20px;
+  color: var(--muted);
+}
+
+.cta-group {
+  margin-top: 30px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 14px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 5px;
+  display: inline-block;
+}
+
+.primary-btn {
+  background: var(--accent);
+  color: #000;
+}
+
+.secondary-btn {
+  border: 1px solid #334155;
+  color: var(--text);
+}
+
+.section {
+  padding: 80px 0;
+}
+
+.section.alt {
+  background: var(--bg-alt);
 }
 
 h2 {
-  margin-top: 50px;
+  font-size: 32px;
+  margin-bottom: 20px;
 }
 
-.cta {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 14px 24px;
-  background: #38bdf8;
-  color: #000;
-  text-decoration: none;
-  border-radius: 6px;
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.list li {
+  margin-bottom: 12px;
+  color: var(--muted);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.step {
+  background: #020617;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.step span {
+  font-size: 24px;
+  color: var(--accent);
   font-weight: bold;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  color: var(--muted);
+}
+
+.cta-section {
+  padding: 100px 0;
+  text-align: center;
+  background: linear-gradient(180deg, #020617, #020617);
+}
+
+footer {
+  padding: 30px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
 }
